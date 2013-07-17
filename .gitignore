@@ -1,3 +1,6 @@
-node_modules/
+dev/node_modules/
+dev/css/*.css
+dev/js/*.js
+dev/*.html
 *.sublime-project
 *.sublime-workspace
