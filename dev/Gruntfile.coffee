@@ -27,9 +27,9 @@ module.exports = (grunt) ->
 	cssDev["css/#{name}.ie.css"] 					= 'b/**/*.ie.styl'
 	cssDev["css/#{name}.ie7.css"] 				= 'b/**/*.ie7.styl'
 
-	cssCompress["#{buildFolder}/css/#{name}.min.css"]			= "#{buildFolder}/css/#{name}.min.css"
-	cssCompress["#{buildFolder}/css/#{name}.ie.min.css"]			= "#{buildFolder}/css/#{name}.ie.min.css"
-	cssCompress["#{buildFolder}/css/#{name}.ie7.min.css"]			= "#{buildFolder}/css/#{name}.ie7.min.css"
+	cssCompress["#{buildFolder}/css/#{name}.min.css"]			= "css/#{name}.css"
+	cssCompress["#{buildFolder}/css/#{name}.ie.min.css"]			= "css/#{name}.ie.css"
+	cssCompress["#{buildFolder}/css/#{name}.ie7.min.css"]			= "css/#{name}.ie7.css"
 	
 	# logic written with coffee is compiled to one js
 	jsDev["js/#{name}.js"]			 						= 'b/**/*.coffee'
