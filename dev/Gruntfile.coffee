@@ -103,13 +103,21 @@ module.exports = (grunt) ->
                 tasks: ['coffee']
                 options:
                 	 livereload: true
-
+            concat:
+                files: ['b/**/*.yaml']
+                tasks: 'concat:data'
+                options:
+                    livereload: true
         concat:
-            options:
-                separator: ';'
-            dist:
-                src: ['b/**/*.js']
-                dest: 'js/libs.js'          
+            js:
+                options:
+                    separator: ';'
+                dist:
+                    src: ['b/**/*.js']
+                    dest: 'js/libs.js'
+            data:
+                    src: ['b/**/*.yaml']
+                    dest: 'data.yaml'     
 
         copy:
             build:
@@ -146,5 +154,5 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-style-injector'
     grunt.loadNpmTasks 'grunt-contrib-connect'
 
-    grunt.registerTask 'default', ['connect:server','jade:dev', 'stylus:dev', 'coffee', 'concat','styleinjector','watch']
+    grunt.registerTask 'default', ['connect:server','concat:data','jade:dev', 'stylus:dev', 'coffee','concat:js','styleinjector','watch']
     grunt.registerTask 'build', ['jade:build', 'cssmin', 'uglify', 'copy:build']

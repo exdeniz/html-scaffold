@@ -3,4 +3,6 @@ extends layout
 include ../b/blocks
 
 block content
-	+layout(data.content)
+
+    +header(data.header)
+    +header({first_name: "Igor", last_name: "Pnev",phone:"+7-921-924-4444"} )
