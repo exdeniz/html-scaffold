@@ -118,12 +118,21 @@ module.exports = (grunt) ->
                     src: ['b/**', '!b/**/*.jade', '!b/**/*.styl', '!b/**/*.coffee', '!b/**/*.js']
                     dest: "#{buildFolder}/"
                 }]
+
+        connect:
+        	server:
+        		options:
+        			port: 9001
+        			base: '.'
+
         styleinjector:
             dev:
                 files: 
                 	src: ['css/**/*.css']                
                 options: 
                     watchTask: true
+
+
 
 
     grunt.loadNpmTasks 'grunt-contrib-jade'
@@ -135,6 +144,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-concat'
     grunt.loadNpmTasks 'grunt-style-injector'
+    grunt.loadNpmTasks 'grunt-contrib-connect'
 
-    grunt.registerTask 'default', ['jade:dev', 'stylus:dev', 'coffee', 'concat','styleinjector','watch']
+    grunt.registerTask 'default', ['connect:server','jade:dev', 'stylus:dev', 'coffee', 'concat','styleinjector','watch']
     grunt.registerTask 'build', ['jade:build', 'cssmin', 'uglify', 'copy:build']

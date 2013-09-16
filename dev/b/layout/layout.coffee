@@ -1,2 +1,2 @@
 $('body')
-	.append '<p>Coffeescript works! Super Per</p>'
+	.append '<p>Coffeescript works!</p>'
