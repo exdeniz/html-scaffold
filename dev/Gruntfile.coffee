@@ -38,6 +38,8 @@ module.exports = (grunt) ->
     jsBuild["#{buildFolder}/js/#{name}.min.js"] = "js/#{name}.js"
     jsBuild["#{buildFolder}/js/libs.min.js"] = "js/libs.js"
     
+    # Image dir
+    imageCompress = 'images/'
 
     grunt.initConfig 
         pkg: grunt.file.readJSON 'package.json'
@@ -76,7 +78,6 @@ module.exports = (grunt) ->
                 files: cssDev
                 options:
                     compress: false
-
         coffee:
             dev:
                 files: jsDev
@@ -87,7 +88,7 @@ module.exports = (grunt) ->
 
         cssmin:
             build:
-                files: cssCompress      
+                files: cssCompress
 
         watch:
             jade:
@@ -108,6 +109,11 @@ module.exports = (grunt) ->
                 tasks: 'concat:data'
                 options:
                     livereload: true
+            images:
+                files: ['b/**/*.{png,jpg,gif}']
+                tasks: 'imagemin'
+                options:
+                     livereload: true
         concat:
             js:
                 options:
@@ -126,6 +132,14 @@ module.exports = (grunt) ->
                     src: ['b/**', '!b/**/*.jade', '!b/**/*.styl', '!b/**/*.coffee', '!b/**/*.js']
                     dest: "#{buildFolder}/"
                 }]
+        imagemin:
+            files:
+                expand: true
+                flatten: true
+                cwd: 'b/'
+                src: ['**/*.{png,jpg,gif}']
+                dest: 'images/'
+
 
         connect:
         	server:
@@ -140,6 +154,15 @@ module.exports = (grunt) ->
                 options: 
                     watchTask: true
 
+        initBlock:
+            options:
+                element: '_'
+                modifier: '__'
+                preprocessor: true
+                longModifier: true
+            dev:
+                src: ['index.html']
+                dest: 'b/'
 
 
 
@@ -153,6 +176,8 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-concat'
     grunt.loadNpmTasks 'grunt-style-injector'
     grunt.loadNpmTasks 'grunt-contrib-connect'
+    grunt.loadNpmTasks 'grunt-contrib-imagemin'
+    grunt.loadNpmTasks 'grunt-init-block'
 
-    grunt.registerTask 'default', ['connect:server','concat:data','jade:dev', 'stylus:dev', 'coffee','concat:js','styleinjector','watch']
+    grunt.registerTask 'default', ['connect:server','concat:data','jade:dev', 'stylus:dev', 'initBlock:dev', 'coffee','imagemin','concat:js','styleinjector','watch']
     grunt.registerTask 'build', ['jade:build', 'cssmin', 'uglify', 'copy:build']

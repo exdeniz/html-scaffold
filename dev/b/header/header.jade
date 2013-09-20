@@ -1,4 +1,4 @@
 mixin header(data)
-    .header
+    .header.header__super(init-block="header.styl")
         h1.header_name= data.first_name + ' ' + data.last_name
-        h3.header_phone= data.phone
+        h3.header_phone.header_phone__super= data.phone
