@@ -32,9 +32,12 @@
     "grunt-style-injector": "~0.1.9",
     "grunt-contrib-connect": "~0.5.0",
     "grunt-contrib-imagemin": "~0.3.0",
-    "grunt-init-block": "~0.2.0"
+    "grunt-init-block": "~0.2.0",
+    "grunt-autoprefixer": "~0.3.0",
+    "grunt-image-embed": "~0.3.1"
   },
   "devDependencies": {
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.1",
+    "optimist": "~0.6.0"
   }
 }

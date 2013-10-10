@@ -1,11 +1,11 @@
 module.exports = (grunt) ->
-    name                        = 'scaffold'
-    
+    name                        = 'html-scaffold'
+
 
     tplDev                  = {}
     cssDev                  = {}
     jsDev                       = {}
-    
+
     buildFolder         = '../build'
     tplBuild                = {}
     cssBuild                = {}
@@ -13,38 +13,38 @@ module.exports = (grunt) ->
     jsBuild                 = {}
 
     jqueryBuild     = "http://yandex.st/jquery/1.9.1/jquery.min.js"
-    jqueryDev       = "js/libs/jquery.js"   
+    jqueryDev       = "js/libs/jquery.js"
 
     libs                        = []
-    
+
     # pages
     tplDev['index.html']                                        = 'tpl/index.jade'
 
-    tplBuild["#{buildFolder}/index.html"]   = 'tpl/index.jade'      
+    tplBuild["#{buildFolder}/index.html"]   = 'tpl/index.jade'
 
     # styles
     cssDev["css/#{name}.css"]                           = 'b/blocks.styl'
     cssDev["css/#{name}.ie.css"]                    = 'b/**/*.ie.styl'
     cssDev["css/#{name}.ie7.css"]               = 'b/**/*.ie7.styl'
 
-    cssCompress["#{buildFolder}/css/#{name}.min.css"]           = "css/#{name}.css"
+    cssCompress["#{buildFolder}/css/#{name}.min.css"]           = "css/#{name}.uri.css"
     cssCompress["#{buildFolder}/css/#{name}.ie.min.css"]            = "css/#{name}.ie.css"
     cssCompress["#{buildFolder}/css/#{name}.ie7.min.css"]           = "css/#{name}.ie7.css"
-    
-    # logic written with coffee is compiled to one js
-    jsDev["js/#{name}.js"]                                  = 'b/**/*.coffee'
 
-    # concatenated files will be uglyfied for build version 
+    # logic written with coffee is compiled to one js
+    jsDev["js/#{name}.js"]                               = 'b/**/*.coffe'
+
+    # concatenated files will be uglyfied for build version
     jsBuild["#{buildFolder}/js/#{name}.min.js"] = "js/#{name}.js"
     jsBuild["#{buildFolder}/js/libs.min.js"] = "js/libs.js"
-    
+
     # Image dir
     imageCompress = 'images/'
 
-    grunt.initConfig 
+    grunt.initConfig
         pkg: grunt.file.readJSON 'package.json'
 
-        jade: 
+        jade:
             dev:
                 files: tplDev
                 options:
@@ -52,8 +52,8 @@ module.exports = (grunt) ->
                     data:
                         projectName: name
                         data:   grunt.file.readYAML 'data.yaml'
-                        css: 
-                            common: "css/#{name}.css"
+                        css:
+                            common: "css/#{name}.prefix.css"
                             ie: "css/#{name}.ie.css"
                             ie7: "css/#{name}.ie7.css"
                         js: "js/#{name}.js"
@@ -65,7 +65,7 @@ module.exports = (grunt) ->
                     data:
                         projectName: name
                         data:   grunt.file.readYAML 'data.yaml'
-                        css: 
+                        css:
                             common: "css/#{name}.min.css"
                             ie: "css/#{name}.ie.min.css"
                             ie7: "css/#{name}.ie7.min.css"
@@ -78,6 +78,8 @@ module.exports = (grunt) ->
                 files: cssDev
                 options:
                     compress: false
+                use:
+                    require: 'nib'
         coffee:
             dev:
                 files: jsDev
@@ -93,27 +95,30 @@ module.exports = (grunt) ->
         watch:
             jade:
                 files: ['tpl/**/*.jade', 'b/**/*.jade', 'lib/**/*.jade', 'data.yaml']
-                tasks: 'jade:dev'
+                tasks: ['concat:data','jade:dev']
                 options:
-                	 livereload: true
+                   livereload: true
             stylus:
                 files: ['b/**/*.styl', 'lib/**/*.styl']
-                tasks: 'stylus:dev'
+                tasks: ['stylus:dev','autoprefixer']
             coffee:
                 files: ['b/**/*.coffee', 'lib/**/*.coffee']
                 tasks: ['coffee']
                 options:
-                	 livereload: true
+                   livereload: true
             concat:
                 files: ['b/**/*.yaml']
                 tasks: 'concat:data'
                 options:
                     livereload: true
             images:
-                files: ['b/**/*.{png,jpg,gif}']
+                files: ['b/**/images/*.{png,jpg,gif}']
                 tasks: 'imagemin'
                 options:
                      livereload: true
+            autoprefixer:
+                files: ['css/#{name}.css']
+                task: 'autoprefixer'
         concat:
             js:
                 options:
@@ -123,13 +128,13 @@ module.exports = (grunt) ->
                     dest: 'js/libs.js'
             data:
                     src: ['b/**/*.yaml']
-                    dest: 'data.yaml'     
+                    dest: 'data.yaml'
 
         copy:
             build:
                 files: [{
                     expand: true
-                    src: ['b/**', '!b/**/*.jade', '!b/**/*.styl', '!b/**/*.coffee', '!b/**/*.js']
+                    src: ['!b/**', '!b/**/*.jade', '!b/**/*.styl', '!b/**/*.coffee', '!b/**/*.js']
                     dest: "#{buildFolder}/"
                 }]
         imagemin:
@@ -137,33 +142,33 @@ module.exports = (grunt) ->
                 expand: true
                 flatten: true
                 cwd: 'b/'
-                src: ['**/*.{png,jpg,gif}']
+                src: ['**/images/*.{png,jpg,gif}']
                 dest: 'images/'
 
 
         connect:
-        	server:
-        		options:
-        			port: 9001
-        			base: '.'
+          server:
+            options:
+              hostname: '*'
+              port: 9001
+              base: '.'
 
         styleinjector:
             dev:
-                files: 
-                	src: ['css/**/*.css']                
-                options: 
+                files:
+                  src: ['css/**/*.css']
+                options:
                     watchTask: true
-
-        initBlock:
-            options:
-                element: '_'
-                modifier: '__'
-                preprocessor: true
-                longModifier: true
+        autoprefixer:
             dev:
-                src: ['index.html']
-                dest: 'b/'
-
+                src: "css/#{name}.css"
+                dest: "css/#{name}.prefix.css"
+        imageEmbed:
+            dist:
+              src: ["css/#{name}.prefix.css"]
+              dest: "css/#{name}.uri.css"
+              options:
+                deleteAfterEncoding: false
 
 
     grunt.loadNpmTasks 'grunt-contrib-jade'
@@ -177,7 +182,9 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-style-injector'
     grunt.loadNpmTasks 'grunt-contrib-connect'
     grunt.loadNpmTasks 'grunt-contrib-imagemin'
-    grunt.loadNpmTasks 'grunt-init-block'
+    grunt.loadNpmTasks 'grunt-autoprefixer'
+    grunt.loadNpmTasks 'grunt-image-embed'
 
-    grunt.registerTask 'default', ['connect:server','concat:data','jade:dev', 'stylus:dev', 'initBlock:dev', 'coffee','imagemin','concat:js','styleinjector','watch']
-    grunt.registerTask 'build', ['jade:build', 'cssmin', 'uglify', 'copy:build']
+    grunt.registerTask 'default', ['connect:server','concat:data','jade:dev', 'stylus:dev', 'coffee','imagemin','concat:js','autoprefixer','styleinjector','watch']
+    grunt.registerTask 'build', ['jade:build','imageEmbed','cssmin','uglify', 'copy:build']
+    grunt.registerTask 'server', ['connect:server', 'watch']
