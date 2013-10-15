@@ -5,3 +5,4 @@
 ### Todo
 
 * сделать новое описание
+* Разбить конфиг с помощью firstandthird/load-grunt-config
