@@ -1,5 +1,5 @@
 module.exports = (grunt) ->
-    name                        = 'happy'
+    name                        = 'html-scaffold'
 
 
     tplDev                  = {}
