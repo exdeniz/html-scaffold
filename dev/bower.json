@@ -1,0 +1,17 @@
+{
+  "name": "static",
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery-validation": "~1.11.2",
+    "jquery": "<1.9",
+    "angular": "~1.0.7",
+    "angular-ui": "~0.4.0",
+    "angular-i18n": "~1.0.7",
+    "string-format": "~1.0.2",
+    "angular-ui-select2": ">0.0.1",
+    "select2": ">3.4.0",
+    "hogan": "~3.0.0",
+    "typeahead.js": "~0.9.3",
+    "pickadate": "~3.3.0"
+  }
+}

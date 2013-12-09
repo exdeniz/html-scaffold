@@ -86,16 +86,10 @@ module.exports = (grunt) ->
                 files: cssDev
                 options:
                     compress: false
-                use:
-                    require: 'nib'
             ie:
-                files: [cssDevIE,cssDevIE7,cssDevIE8]
+                files: [cssDevIE,cssDevIE7]
                 options:
                     compress: false
-                use:
-                    require: 'nib'
-        concurrent:
-             stylusDev: ['stylus:dev','stylus:ie7','stylus:ie8','stylus:ie']
 
         coffee:
             dev:
@@ -117,7 +111,7 @@ module.exports = (grunt) ->
                 #livereload: true
             stylus:
                 files: ['b/**/*.styl','!b/**/*.ie7.styl','!b/**/*.ie8.styl','!b/**/*.ie.styl']
-                tasks: ['stylus:dev']
+                tasks: ['stylus:dev','autoprefixer:dev']
             stylusIE:
                 files: ['b/**/*.styl']
                 tasks: ['stylus:ie']
@@ -213,7 +207,6 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-imagemin'
     grunt.loadNpmTasks 'grunt-init-block'
     grunt.loadNpmTasks 'grunt-autoprefixer'
-    grunt.loadNpmTasks 'grunt-concurrent'
 
     grunt.registerTask 'default', ['connect:server','concat:data','jade:dev', 'stylus:dev','stylus:ie', 'initBlock:dev', 'coffee','imagemin','concat:js','autoprefixer','styleinjector','watch']
     grunt.registerTask 'build', ['jade:build', 'cssmin', 'uglify', 'copy:build']
